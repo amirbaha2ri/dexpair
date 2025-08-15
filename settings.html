@@ -74,7 +74,7 @@
         }
         body.light-theme .section { background: transparent; }
 
-        .section h2 { margin: 0 0 20px 0; font-size: 20px; font-weight: 600; }
+        .section h2 { margin: 0 0 20px 0; font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         .section p { margin: 0 0 20px 0; color: var(--secondary-text-color); line-height: 1.5; }
         
         .btn {
@@ -134,6 +134,46 @@
             cursor: pointer; background: var(--surface-color);
         }
         .theme-selector input[type="radio"] { accent-color: var(--accent-color); }
+        
+
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            background: var(--surface-color);
+            color: var(--primary-text-color);
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        body.light-theme .contact-link {
+            background: var(--bg-color);
+        }
+
+        .contact-link:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .contact-link svg {
+            fill: var(--secondary-text-color);
+            transition: fill 0.2s ease;
+        }
+
+        .contact-link:hover svg {
+            fill: var(--accent-color);
+        }
     </style>
 </head>
 <body>
@@ -185,6 +225,21 @@
             </div>
             <button id="clearData" class="btn btn-danger">🗑️ Clear All Data</button>
             <button id="confirmClear" class="btn btn-danger hidden">⚠️ Confirm Clear All Data</button>
+        </div>
+
+        <div class="section">
+            <h2>ℹ️ About</h2>
+            <p>For feedback, questions, or support, feel free to reach out.</p>
+            <div class="contact-links">
+                <a href="https://t.me/amirbaha2ri" target="_blank" class="contact-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23l7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3L3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.51.71l-4.88-3.59l-2.32 2.2a1.06 1.06 0 0 1-.91.31z"/></svg>
+                    <span>Telegram</span>
+                </a>
+                <a href="https://www.linkedin.com/in/amirbaha2ri" target="_blank" class="contact-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    <span>LinkedIn</span>
+                </a>
+            </div>
         </div>
     </div>
 
