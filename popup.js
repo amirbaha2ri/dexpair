@@ -30,10 +30,19 @@ class PairTracker {
         document.getElementById('pairAddress').addEventListener('keypress', (e) => { if (e.key === 'Enter') this.addPair(); });
         document.getElementById('pairName').addEventListener('keypress', (e) => { if (e.key === 'Enter') this.addPair(); });
 
+        // Use event delegation for both remove and link clicks
         document.getElementById('pairsList').addEventListener('click', (e) => {
+            // Handle remove button click
             if (e.target.matches('.btn-remove')) {
                 const pairId = e.target.dataset.id;
                 this.removePair(pairId);
+                return; // Stop further processing
+            }
+
+            // **NEW:** Handle pair item click to open URL
+            const pairItem = e.target.closest('.pair-item.clickable');
+            if (pairItem && pairItem.dataset.url) {
+                chrome.tabs.create({ url: pairItem.dataset.url });
             }
         });
     }
@@ -66,7 +75,7 @@ class PairTracker {
         if (!/^0x[a-fA-F0-9]{40}$/.test(address)) return;
         if (this.pairs.some(p => p.address.toLowerCase() === address.toLowerCase())) return;
 
-        const newPair = { id: Date.now().toString(), name, address };
+        const newPair = { id: Date.now().toString(), name, address, url: null }; // Ensure url property exists
         this.pairs.push(newPair);
         await this.savePairs();
         nameInput.value = '';
@@ -92,10 +101,13 @@ class PairTracker {
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const data = await response.json();
             if (!data.pair) throw new Error('No pair data found');
+            
+            // **MODIFIED:** Save the URL along with other data
             Object.assign(this.pairs[pairIndex], {
                 priceUsd: data.pair.priceUsd || 'N/A',
                 priceNative: data.pair.priceNative || 'N/A',
                 imageUrl: data.pair.info?.imageUrl || null,
+                url: data.pair.url || null, // Save the URL here
                 error: null
             });
         } catch (error) {
@@ -103,7 +115,7 @@ class PairTracker {
             this.pairs[pairIndex].error = error.message;
         } finally {
             this.pairs[pairIndex].loading = false;
-            await this.savePairs();
+            await this.savePairs(); // Save the updated data (including the URL)
             this.renderPairs();
         }
     }
@@ -126,8 +138,9 @@ class PairTracker {
             container.innerHTML = `<div class="empty-state">No pairs added yet. Add your first pair above!</div>`;
             return;
         }
+        // **MODIFIED:** Add 'clickable' class and 'data-url' attribute if a URL exists
         container.innerHTML = this.pairs.map(pair => `
-            <div class="pair-item">
+            <div class="pair-item ${pair.url ? 'clickable' : ''}" data-url="${pair.url || ''}" title="${pair.url ? 'Click to open on DexScreener' : ''}">
                 <div class="pair-content">
                     <div class="pair-image">${this.renderPairImage(pair)}</div>
                     <div class="pair-info">
@@ -140,7 +153,7 @@ class PairTracker {
                         </div>
                     </div>
                 </div>
-                <button class="btn-remove" data-id="${pair.id}">✕</button>
+                <button class="btn-remove" data-id="${pair.id}" title="Remove Pair">✕</button>
             </div>
         `).join('');
     }
