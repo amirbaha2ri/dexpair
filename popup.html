@@ -76,7 +76,17 @@
             display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; transition: all 0.2s ease;
         }
         .pair-item:hover { border-color: var(--border-color); }
-        .pair-content { display: flex; align-items: center; flex: 1; gap: 12px; min-width: 0; }
+
+        /* **NEW:** Styles for clickable pair items */
+        .pair-item.clickable {
+            cursor: pointer;
+        }
+        .pair-item.clickable:hover {
+            border-color: var(--accent-color);
+            background: var(--btn-secondary-bg);
+        }
+
+        .pair-content { display: flex; align-items: center; flex: 1; gap: 12px; min-width: 0; pointer-events: none; /* Make content non-interactive so parent div gets the click */ }
         .pair-image { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-color); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; border: 2px solid var(--border-color); }
         .pair-image img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; opacity: 0; transition: opacity 0.3s ease; }
         .pair-info { flex: 1; overflow: hidden; white-space: nowrap; }
