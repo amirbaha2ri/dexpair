@@ -16,6 +16,10 @@
     .header {
       text-align: center;
       margin-bottom: 20px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .header h1 {
@@ -23,6 +27,30 @@
       font-size: 20px;
       font-weight: 600;
       text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .settings-btn {
+      position: absolute;
+      right: 0;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 8px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
+    }
+    
+    .settings-btn:hover {
+      background: rgba(255,255,255,0.3);
+      transform: rotate(45deg) scale(1.1);
     }
     
     .add-section {
@@ -114,6 +142,65 @@
       transform: translateX(2px);
     }
     
+    .pair-item.clickable {
+      cursor: pointer;
+    }
+    
+    .pair-item.clickable:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateX(4px);
+    }
+    
+    .link-indicator {
+      color: #4caf50;
+      font-size: 14px;
+      margin-left: 8px;
+      opacity: 0.8;
+    }
+    
+    .pair-content {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      gap: 12px;
+    }
+    
+    .pair-image {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.3);
+      transition: all 0.2s ease;
+    }
+    
+    .pair-image img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .pair-image.loading {
+      animation: pulse 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes pulse {
+      0% {
+        opacity: 0.6;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    
     .pair-info {
       flex: 1;
     }
@@ -203,6 +290,7 @@
 <body>
   <div class="header">
     <h1>🚀 DexScreener Tracker</h1>
+    <button id="settingsBtn" class="settings-btn" title="Settings">⚙️</button>
   </div>
   
   <div class="add-section">
