@@ -1,105 +1,68 @@
-# DexScreener Pair Tracker Chrome Extension By @AmirBaha2ri
+# DexScreener Pair Tracker - Chrome Extension
 
-A Chrome extension that tracks cryptocurrency pairs from the DexScreener API on PulseChain. Users can add multiple pair addresses with custom names and monitor their USD and native token prices.
+A lightweight and easy-to-use Chrome extension for tracking cryptocurrency pairs from DexScreener, specifically configured for the PulseChain network.
 
-Any questions? Contact: t.me/amirbaha2ri
+## 🚀 Features
 
-## Features
+* **Add Pairs by Address:** Easily add any token pair by providing a custom name and its contract address.
+* **Real-time Price Updates:** Fetches the latest USD and native token prices directly from the DexScreener API.
+* **Token Images:** Automatically displays the token's image where available.
+* **Selectable Themes:** Choose between a sleek dark theme and a clean light theme to match your preference.
+* **Data Management:** Simple settings page to export your list of pairs as a JSON backup or clear all data to start fresh.
+* **Secure & Private:** All data is stored locally on your machine using `chrome.storage.local`.
 
-- ✅ Add/remove cryptocurrency pairs with custom names
-- ✅ Real-time price tracking (USD and Base/Native prices)
-- ✅ Data persistence using Chrome's local storage
-- ✅ Clean, modern UI with glassmorphism design
-- ✅ Auto-refresh functionality
-- ✅ Error handling and loading states
-- ✅ Input validation for pair addresses
+---
 
-## Installation
+## 🛠️ Installation
 
-1. **Download the extension files:**
-   - `manifest.json`
-   - `popup.html`
-   - `popup.js`
+Since this extension is not on the Chrome Web Store, you need to load it manually in Developer Mode.
 
-2. **Install in Chrome:**
-   - Open Chrome and navigate to `chrome://extensions/`
-   - Enable "Developer mode" (toggle in top-right corner)
-   - Click "Load unpacked"
-   - Select the folder containing your extension files
-   - The extension will appear in your toolbar
+1.  **Download the Files:** Make sure you have all the project files (`manifest.json`, `popup.html`, `popup.js`, `settings.html`, `settings.js`, and the `img` folder) in a single directory on your computer.
+2.  **Open Chrome Extensions:**
+    * Open Google Chrome.
+    * Navigate to `chrome://extensions` or click the three-dot menu → **Extensions** → **Manage Extensions**.
+3.  **Enable Developer Mode:**
+    * In the top-right corner of the Extensions page, toggle the **"Developer mode"** switch to **On**.
+4.  **Load the Extension:**
+    * Click the **"Load unpacked"** button that appears on the top-left.
+    * In the file selection dialog, navigate to the directory where you saved the extension files and select it.
+5.  **Done!** The "DexScreener Pair Tracker" extension should now appear in your extensions list and in your Chrome toolbar.
 
-## Usage
+---
 
-1. **Click the extension icon** in your Chrome toolbar to open the popup
+## ⚙️ How to Use
 
-2. **Add a new pair:**
-   - Enter a descriptive name for the pair (e.g., "Incentive Token")
-   - Enter the pair address (must start with 0x and be 42 characters long)
-   - Click "Add Pair" or press Enter
+1.  **Pin the Extension:** Click the puzzle piece icon in your Chrome toolbar and then click the pin icon next to "DexScreener Pair Tracker" to keep it visible.
+2.  **Adding a Pair:**
+    * Click the extension icon to open the popup.
+    * Enter a custom name (e.g., "Incentive Token") and the pair's contract address (`0x...`).
+    * Click **"Add Pair"**. The pair will be added to your list and its data will be fetched immediately.
+3.  **Refreshing Data:**
+    * The extension automatically refreshes all pairs every time you open the popup.
+    * To manually update, click the **"Refresh All Pairs"** button at the bottom.
+4.  **Managing Settings:**
+    * Click the gear icon (`⚙️`) in the top-right of the popup to open the settings page.
+    * In settings, you can:
+        * **Change the Theme:** Select between Light and Dark mode.
+        * **Export Data:** Generate a JSON backup of your saved pairs.
+        * **Clear Data:** Permanently delete all saved pairs.
 
-3. **View pair data:**
-   - Each pair shows the custom name, USD price, and native token price
-   - Data refreshes automatically when you open the popup
+---
 
-4. **Manage pairs:**
-   - Click the "✕" button to remove a pair
-   - Click "🔄 Refresh All Pairs" to update all data
+## 📂 Project Files
 
-## API Integration
+* `manifest.json`: The core configuration file for the Chrome extension. Defines permissions, popup behavior, and icons.
+* `popup.html`: The HTML structure for the main popup window.
+* `popup.js`: Handles all logic for the popup, including adding/removing pairs and fetching data from the API.
+* `settings.html`: The HTML structure for the settings page.
+* `settings.js`: Manages the logic for the settings page, including theme selection and data management.
+* `/img/`: A folder containing the icons for the extension (`dexpair-16.png`, `dexpair-48.png`, `dexpair-128.png`).
 
-The extension uses the DexScreener API:
-```
-https://api.dexscreener.com/latest/dex/pairs/pulsechain/{pairAddress}
-```
+---
 
-**Data extracted:**
-- `pair.priceUsd` → USD price
-- `pair.priceNative` → Base/Native token price
+## 💬 Contact
 
-## Technical Details
+For any questions, feedback, or support, feel free to reach out:
 
-### Permissions Required
-- `storage` - For saving pair addresses locally
-- `activeTab` - For extension popup functionality  
-- `https://api.dexscreener.com/*` - For API access
-
-### Storage
-- Uses Chrome's `chrome.storage.local` API
-- Data persists between browser sessions
-- No server-side storage required
-
-## Error Handling
-
-- **Invalid addresses**: Validates 0x format and 40-character length
-- **Duplicate pairs**: Prevents adding the same address twice
-- **API errors**: Displays user-friendly error messages
-- **Network issues**: Shows loading states and retry options
-
-## Customization
-
-The extension can be easily modified to:
-- Support other blockchain networks (change the API URL)
-- Add more data fields (volume, liquidity, etc.)
-- Implement different refresh intervals
-- Add export/import functionality for pair lists
-
-## Troubleshooting
-
-**Extension doesn't load:**
-- Ensure all files are in the same directory
-- Check that Developer mode is enabled in Chrome extensions
-
-**API not working:**
-- Verify internet connection
-- Check if the DexScreener API is accessible
-- Ensure pair addresses are valid and exist on PulseChain
-
-**Data not persisting:**
-- Check Chrome storage permissions
-- Try reloading the extension
-
-## Example Pair Address
-```
-0xf808Bb6265e9Ca27002c0A04562Bf50d4FE37EAA
-```
-This is the Incentive (INC) / Wrapped Pulse (WPLS) pair used as an example in the original request.
+* **Telegram:** [t.me/amirbaha2ri](https://t.me/amirbaha2ri)
+* **LinkedIn:** [linkedin.com/in/amirbaha2ri](https://www.linkedin.com/in/amirbaha2ri)
