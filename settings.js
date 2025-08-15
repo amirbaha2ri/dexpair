@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    // --- ELEMENT SELECTORS ---
     const totalPairsEl = document.getElementById('totalPairs');
     const storageUsedEl = document.getElementById('storageUsed');
     const exportPairsBtn = document.getElementById('exportPairs');
@@ -10,41 +8,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmClearBtn = document.getElementById('confirmClear');
     const successMessageEl = document.getElementById('successMessage');
     const backButton = document.getElementById('backButton');
+    const themeRadios = document.querySelectorAll('input[name="theme"]');
 
     let currentPairs = [];
 
+    // --- THEME FUNCTIONS ---
+    function applyTheme(theme) {
+        document.body.classList.toggle('light-theme', theme === 'light');
+    }
+
+    async function handleThemeChange(event) {
+        const selectedTheme = event.target.value;
+        await chrome.storage.local.set({ theme: selectedTheme });
+        applyTheme(selectedTheme);
+    }
+
     // --- INITIALIZATION ---
     async function init() {
-        const data = await chrome.storage.local.get(['pairs']);
+        const data = await chrome.storage.local.get(['pairs', 'theme']);
+        
+        // Load and apply theme first
+        const currentTheme = data.theme || 'dark';
+        applyTheme(currentTheme);
+        document.querySelector(`input[name="theme"][value="${currentTheme}"]`).checked = true;
+
+        // Load pairs and update stats
         currentPairs = data.pairs || [];
         updateStats();
     }
 
-    // --- UI UPDATE FUNCTIONS ---
     function updateStats() {
         totalPairsEl.textContent = currentPairs.length;
         chrome.storage.local.getBytesInUse(['pairs'], (bytes) => {
-            const kb = (bytes / 1024).toFixed(2);
-            storageUsedEl.textContent = `${kb} KB`;
+            storageUsedEl.textContent = `${(bytes / 1024).toFixed(2)} KB`;
         });
     }
 
     function showSuccessMessage(message) {
         successMessageEl.textContent = message;
-        successMessageEl.style.display = 'block';
+        successMessageEl.classList.remove('hidden');
         setTimeout(() => {
-            successMessageEl.style.display = 'none';
+            successMessageEl.classList.add('hidden');
         }, 3000);
     }
 
     // --- EVENT LISTENERS ---
     exportPairsBtn.addEventListener('click', () => {
-        if (currentPairs.length === 0) {
-            pairsExportEl.textContent = 'No pairs to export.';
-        } else {
-            const exportData = currentPairs.map(p => ({ name: p.name, address: p.address }));
-            pairsExportEl.textContent = JSON.stringify(exportData, null, 2);
-        }
+        pairsExportEl.textContent = currentPairs.length > 0 
+            ? JSON.stringify(currentPairs.map(p => ({ name: p.name, address: p.address })), null, 2)
+            : 'No pairs to export.';
         pairsExportEl.classList.remove('hidden');
         copyPairsBtn.classList.remove('hidden');
     });
@@ -53,12 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.clipboard.writeText(pairsExportEl.textContent).then(() => {
             showSuccessMessage('Copied to clipboard!');
             copyPairsBtn.textContent = '✅ Copied!';
-            setTimeout(() => {
-                copyPairsBtn.textContent = '📋 Copy to Clipboard';
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy text: ', err);
-            alert('Failed to copy. Please copy manually.');
+            setTimeout(() => { copyPairsBtn.textContent = '📋 Copy to Clipboard'; }, 2000);
         });
     });
 
@@ -68,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     confirmClearBtn.addEventListener('click', async () => {
-        await chrome.storage.local.clear();
+        await chrome.storage.local.remove('pairs'); // Only remove pairs, not theme
         currentPairs = [];
         updateStats();
         pairsExportEl.textContent = '';
@@ -76,17 +83,15 @@ document.addEventListener('DOMContentLoaded', () => {
         copyPairsBtn.classList.add('hidden');
         confirmClearBtn.classList.add('hidden');
         clearDataBtn.classList.remove('hidden');
-        showSuccessMessage('All data has been cleared!');
+        showSuccessMessage('All pair data has been cleared!');
     });
 
     backButton.addEventListener('click', (e) => {
         e.preventDefault();
-        // Closes the current tab (the settings page)
-        chrome.tabs.getCurrent(tab => {
-            chrome.tabs.remove(tab.id);
-        });
+        chrome.tabs.getCurrent(tab => chrome.tabs.remove(tab.id));
     });
 
-    // --- START EXECUTION ---
+    themeRadios.forEach(radio => radio.addEventListener('change', handleThemeChange));
+
     init();
 });

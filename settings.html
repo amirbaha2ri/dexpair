@@ -5,6 +5,7 @@
     <title>DexScreener Tracker - Settings</title>
     <style>
         :root {
+            /* Dark Theme (Default) */
             --bg-color: #202124;
             --surface-color: #303134;
             --primary-text-color: #e8eaed;
@@ -12,11 +13,31 @@
             --border-color: #5f6368;
             --accent-color: #8ab4f8;
             --accent-text-color: #202124;
-            --danger-color: #f28b82;
-            --danger-bg-color: #5c2b29;
-            --success-color: #81c995;
-            --warning-color-text: #202124;
-            --warning-color-bg: #fdd663;
+            --success-bg: #2e4236;
+            --success-text: #81c995;
+            --warning-bg: #fdd663;
+            --warning-text: #202124;
+            --warning-border: #f9ab00;
+            --danger-bg: #5c2b29;
+            --danger-text: #f28b82;
+        }
+
+        body.light-theme {
+            /* Light Theme Overrides */
+            --bg-color: #ffffff;
+            --surface-color: #f1f3f4;
+            --primary-text-color: #202124;
+            --secondary-text-color: #5f6368;
+            --border-color: #dadce0;
+            --accent-color: #1a73e8;
+            --accent-text-color: #ffffff;
+            --success-bg: #e6f4ea;
+            --success-text: #1e8e3e;
+            --warning-bg: #feefc3;
+            --warning-text: #bf5000;
+            --warning-border: transparent;
+            --danger-bg: #fce8e6;
+            --danger-text: #c5221f;
         }
 
         body {
@@ -27,6 +48,7 @@
             min-height: 100vh;
             color: var(--primary-text-color);
             box-sizing: border-box;
+            transition: background-color 0.2s, color 0.2s;
         }
         
         .container {
@@ -39,23 +61,9 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .header h1 {
-            margin: 0;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            margin: 0;
-            color: var(--secondary-text-color);
-            font-size: 16px;
-        }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { margin: 0 0 10px 0; font-size: 32px; font-weight: 700; }
+        .header p { margin: 0; color: var(--secondary-text-color); font-size: 16px; }
         
         .section {
             background: rgba(0,0,0,0.2);
@@ -64,21 +72,10 @@
             margin-bottom: 24px;
             border: 1px solid var(--border-color);
         }
-        
-        .section h2 {
-            margin: 0 0 20px 0;
-            font-size: 20px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section p {
-            margin: 0 0 20px 0;
-            color: var(--secondary-text-color);
-            line-height: 1.5;
-        }
+        body.light-theme .section { background: transparent; }
+
+        .section h2 { margin: 0 0 20px 0; font-size: 20px; font-weight: 600; }
+        .section p { margin: 0 0 20px 0; color: var(--secondary-text-color); line-height: 1.5; }
         
         .btn {
             background: var(--accent-color);
@@ -89,27 +86,14 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             margin-right: 12px;
             margin-bottom: 12px;
             display: inline-block;
         }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
         
-        .btn:hover {
-            background: #a1c6ff;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(138, 180, 248, 0.2);
-        }
-        
-        .btn-danger {
-            background: var(--danger-bg-color);
-            color: var(--danger-color);
-        }
-        
-        .btn-danger:hover {
-            background: #753735;
-            box-shadow: 0 8px 20px rgba(242, 139, 130, 0.2);
-        }
+        .btn-danger { background: var(--danger-bg); color: var(--danger-text); }
         
         .pairs-export {
             background: var(--bg-color);
@@ -122,95 +106,38 @@
             white-space: pre-wrap;
             max-height: 300px;
             overflow-y: auto;
-            color: #c5c8c6;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .success-message {
-            background: #2e4236;
-            color: var(--success-color);
-            padding: 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: none;
-            animation: slideIn 0.3s ease;
-        }
-        
-        .warning-message {
-            background: var(--warning-color-bg);
-            color: var(--warning-color-text);
-            padding: 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #f9ab00;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-        
-        .stat-item {
-            background: rgba(0,0,0,0.1);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
-        
-        .stat-number {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: var(--accent-color);
-        }
-        
-        .stat-label {
-            font-size: 12px;
             color: var(--secondary-text-color);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
+        
+        .hidden { display: none; }
+        
+        .success-message { background: var(--success-bg); color: var(--success-text); }
+        .warning-message { background: var(--warning-bg); color: var(--warning-text); border: 1px solid var(--warning-border); }
+        .success-message, .warning-message { padding: 16px; border-radius: 10px; margin-bottom: 20px; }
+        
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 20px; }
+        .stat-item { background: var(--bg-color); border-radius: 12px; padding: 16px; text-align: center; border: 1px solid var(--border-color); }
+        .stat-number { font-size: 24px; font-weight: 700; margin-bottom: 4px; color: var(--accent-color); }
+        .stat-label { font-size: 12px; color: var(--secondary-text-color); text-transform: uppercase; }
         
         .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            color: var(--primary-text-color);
-            padding: 10px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            position: fixed; top: 20px; left: 20px; background: var(--surface-color); border: 1px solid var(--border-color);
+            color: var(--primary-text-color); padding: 10px 16px; border-radius: 10px; cursor: pointer;
+            font-size: 14px; transition: all 0.2s ease; text-decoration: none;
         }
-        
-        .back-button:hover {
-            background: #3c4043;
-            transform: translateX(-2px);
+        .back-button:hover { filter: brightness(1.1); }
+
+        .theme-selector { display: flex; gap: 10px; }
+        .theme-selector label {
+            display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+            border-radius: 8px; border: 1px solid var(--border-color);
+            cursor: pointer; background: var(--surface-color);
         }
+        .theme-selector input[type="radio"] { accent-color: var(--accent-color); }
     </style>
 </head>
 <body>
-    <a href="#" class="back-button" id="backButton">
-        ← Back
-    </a>
+    <a href="#" class="back-button" id="backButton">← Back</a>
 
     <div class="container">
         <div class="header">
@@ -218,27 +145,34 @@
             <p>Manage your DexScreener Pair Tracker configuration</p>
         </div>
 
-        <div id="successMessage" class="success-message hidden">
-            Operation completed successfully!
+        <div id="successMessage" class="success-message hidden">Operation completed successfully!</div>
+
+        <div class="section">
+            <h2>🎨 Theme</h2>
+            <p>Choose your preferred interface theme.</p>
+            <div class="theme-selector">
+                <label>
+                    <input type="radio" name="theme" value="light">
+                    <span>☀️ Light</span>
+                </label>
+                <label>
+                    <input type="radio" name="theme" value="dark">
+                    <span>🌙 Dark</span>
+                </label>
+            </div>
         </div>
 
         <div class="section">
             <h2>📊 Statistics</h2>
             <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-number" id="totalPairs">0</div>
-                    <div class="stat-label">Total Pairs</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="storageUsed">0 KB</div>
-                    <div class="stat-label">Storage Used</div>
-                </div>
+                <div class="stat-item"><div class="stat-number" id="totalPairs">0</div><div class="stat-label">Total Pairs</div></div>
+                <div class="stat-item"><div class="stat-number" id="storageUsed">0 KB</div><div class="stat-label">Storage Used</div></div>
             </div>
         </div>
 
         <div class="section">
             <h2>📋 Export Pairs</h2>
-            <p>Get a JSON list of all your saved pairs with names and addresses.</p>
+            <p>Get a JSON list of all your saved pairs.</p>
             <button id="exportPairs" class="btn">📄 Export Pairs List</button>
             <button id="copyPairs" class="btn hidden">📋 Copy to Clipboard</button>
             <div id="pairsExport" class="pairs-export hidden"></div>
@@ -247,7 +181,7 @@
         <div class="section">
             <h2>🗑️ Data Management</h2>
             <div class="warning-message">
-                <strong>⚠️ Warning:</strong> This action will permanently delete all your saved pairs and cannot be undone. Make sure to export your pairs first if you want to keep a backup.
+                <strong>⚠️ Warning:</strong> This action is permanent and cannot be undone.
             </div>
             <button id="clearData" class="btn btn-danger">🗑️ Clear All Data</button>
             <button id="confirmClear" class="btn btn-danger hidden">⚠️ Confirm Clear All Data</button>
