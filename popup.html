@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 400px;
+      min-height: 300px;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      color: white;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .add-section {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .input-group {
+      margin-bottom: 10px;
+    }
+    
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .input-group input::placeholder {
+      color: #999;
+    }
+    
+    .btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
+    }
+    
+    .btn:hover {
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-1px);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+      border: none;
+      font-weight: 600;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(45deg, #ff5252, #ff7043);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255,107,107,0.4);
+    }
+    
+    .pairs-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .pair-item {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.2s ease;
+    }
+    
+    .pair-item:hover {
+      background: rgba(255,255,255,0.15);
+      transform: translateX(2px);
+    }
+    
+    .pair-info {
+      flex: 1;
+    }
+    
+    .pair-name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    
+    .pair-prices {
+      font-size: 11px;
+      opacity: 0.9;
+    }
+    
+    .loading {
+      color: #ffd700;
+      font-style: italic;
+    }
+    
+    .error {
+      color: #ff6b6b;
+      font-size: 10px;
+    }
+    
+    .btn-remove {
+      background: linear-gradient(45deg, #ff6b6b, #ff5252);
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      font-size: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-remove:hover {
+      background: linear-gradient(45deg, #ff5252, #f44336);
+      transform: scale(1.05);
+    }
+    
+    .refresh-btn {
+      width: 100%;
+      margin-top: 10px;
+      background: linear-gradient(45deg, #4caf50, #45a049);
+      border: none;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    
+    .refresh-btn:hover {
+      background: linear-gradient(45deg, #45a049, #3e8e41);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(76,175,80,0.4);
+    }
+    
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.5);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 20px;
+      opacity: 0.7;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🚀 DexScreener Tracker</h1>
+  </div>
+  
+  <div class="add-section">
+    <div class="input-group">
+      <label for="pairName">Pair Name:</label>
+      <input type="text" id="pairName" placeholder="e.g., Incentive Token">
+    </div>
+    <div class="input-group">
+      <label for="pairAddress">Pair Address:</label>
+      <input type="text" id="pairAddress" placeholder="0x...">
+    </div>
+    <button id="addPair" class="btn btn-primary">Add Pair</button>
+  </div>
+  
+  <div class="pairs-list" id="pairsList">
+    <div class="empty-state">No pairs added yet. Add your first pair above!</div>
+  </div>
+  
+  <button id="refreshAll" class="refresh-btn">🔄 Refresh All Pairs</button>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

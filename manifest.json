@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "HLDV DexScreener Pair Tracker",
+  "version": "1.0",
+  "description": "Track cryptocurrency pairs from DexScreener API. By @Amirbaha2ri",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://api.dexscreener.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "DexScreener Pair Tracker"
+  },
+  "icons": {
+    "16": "img/dexpair-16.png",
+    "48": "img/dexpair-48.png",
+    "128": "img/dexpair-128.png"
+  }
+}
